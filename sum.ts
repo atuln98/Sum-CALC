@@ -4,33 +4,35 @@ export function stringSum(inputStr : string ) : number{
         return res
     }
     let inputArray : string[] = parseInput(inputStr)
-    if(checkValidity(inputArray)){
-        inputArray.forEach((v)=>{
-            let value : number = parseInt(v)
-            if(isNaN(value)){
-                throw Error("this is not a valid input please check")
-            }
-            //should create an input filter function if there could be multiple filters
-            //can use check validity for same
-            if(value<1000){                             
-                res += parseInt(v)
-            }
-        })
-    }
+    let validatedInput : number[] = checkValidity(inputArray)
+    validatedInput.forEach((v)=>{
+        //should create an input filter function if there could be multiple filters
+        //can use check validity for same
+        //used check validity in next commit can use according to the requirement
+        // can also compute sum in single traversal
+        res += v
+    })
     return res
 }
 
-export function checkValidity(inputArray : string[]) : boolean{
-    let negativenumbers: number[]=[]
+export function checkValidity(inputArray : string[]) : number[]{
+    let positiveNumbers: number[]=[]
+    let negativeNumbers: number[]=[]
     inputArray.forEach((i)=>{
+        let value : number = parseInt(i)
+        if(isNaN(value)){
+            throw Error("this is not a valid input please check")
+        }
         if(parseInt(i)<0){
-            negativenumbers.push(parseInt(i))
+            negativeNumbers.push(parseInt(i))
+        }else if(parseInt(i)<1000){
+            positiveNumbers.push(value)
         }
     })
-    if(negativenumbers.length>0){
-        throw Error("negative numbers not allowed " + negativenumbers.join(','))
+    if(negativeNumbers.length>0){
+        throw Error("negative numbers not allowed " + negativeNumbers.join(','))
     }
-    return true;
+    return positiveNumbers;
 }
 
 export function parseInput(inputStr : string) : string[]{

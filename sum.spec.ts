@@ -1,8 +1,11 @@
-import {stringSum,parseInput,hascustomdelimeter} from "./sum"
+import {stringSum,parseInput,hascustomdelimeter,checkValidity} from "./sum"
 describe("Check Sum",()=>{
     describe(("initial cases"),()=>{
         test(("empty input"),()=>{
             expect(stringSum("")).toEqual(0)
+        })
+        test(("empty input as all greater than 1000"),()=>{
+            expect(stringSum("1001,1002,1003")).toEqual(0)
         })
         test(("check if sum is correct"),()=>{
             expect(stringSum("1,2,3,4")).toEqual(10)
@@ -35,6 +38,18 @@ describe("Check Sum",()=>{
         test("adding it should ignore 1002,1005 and return 8",()=>{
             expect(stringSum("//;\n1002;1005,3,5")).toEqual(8)
         })
+    })
+})
+
+describe(("input validator"),()=>{
+    test(("should throw error"),()=>{
+        expect(()=>checkValidity(["1","2","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
+    })
+    test(("should return all numbers ignoring greater than 1000"),()=>{
+        expect(checkValidity(["1001","10002","3","5","6"])).toEqual([3,5,6])
+    })
+    test(("should throw error"),()=>{
+        expect(()=>checkValidity(["1001","1002","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
     })
 })
 
