@@ -1,0 +1,22 @@
+{
+  "name": "sum-calc",
+  "version": "1.0.0",
+  "description": "tdd calc",
+  "main": "sum.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "atul.n",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "ts-jest": "^29.2.1"
+  },
+  "jest":{
+    "preset":"ts-jest"
+  }
+}
