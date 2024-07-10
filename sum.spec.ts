@@ -25,6 +25,12 @@ describe("Check Sum",()=>{
             expect(stringSum("//;\n1;2")).toEqual(3)
         })
     })
+    describe(" validate input ",()=>{
+        test(" check for negative numbers",()=>{
+            expect(()=>stringSum("//;\n1;2,-3,-5")).toThrow(new Error('negative numbers not allowed -3,-5'))
+        })
+
+    })
 })
 
 describe(("input parser"),()=>{

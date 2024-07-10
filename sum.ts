@@ -4,13 +4,28 @@ export function stringSum(inputStr : string ) : number{
         return res
     }
     let inputArray : string[] = parseInput(inputStr)
-    inputArray.forEach((v)=>{
-        if(isNaN(parseInt(v))){
-            throw Error("this is not a valid input please check")
-        }
-        res += parseInt(v)
-    })
+    if(checkValidity(inputArray)){
+        inputArray.forEach((v)=>{
+            if(isNaN(parseInt(v))){
+                throw Error("this is not a valid input please check")
+            }
+            res += parseInt(v)
+        })
+    }
     return res
+}
+
+export function checkValidity(inputArray : string[]) : boolean{
+    let negativenumbers: number[]=[]
+    inputArray.forEach((i)=>{
+        if(parseInt(i)<0){
+            negativenumbers.push(parseInt(i))
+        }
+    })
+    if(negativenumbers.length>0){
+        throw Error("negative numbers not allowed " + negativenumbers.join(','))
+    }
+    return true;
 }
 
 export function parseInput(inputStr : string) : string[]{
