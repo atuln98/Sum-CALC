@@ -6,10 +6,15 @@ export function stringSum(inputStr : string ) : number{
     let inputArray : string[] = parseInput(inputStr)
     if(checkValidity(inputArray)){
         inputArray.forEach((v)=>{
-            if(isNaN(parseInt(v))){
+            let value : number = parseInt(v)
+            if(isNaN(value)){
                 throw Error("this is not a valid input please check")
             }
-            res += parseInt(v)
+            //should create an input filter function if there could be multiple filters
+            //can use check validity for same
+            if(value<1000){                             
+                res += parseInt(v)
+            }
         })
     }
     return res

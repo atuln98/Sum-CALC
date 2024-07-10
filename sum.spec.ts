@@ -31,6 +31,11 @@ describe("Check Sum",()=>{
         })
 
     })
+    describe(" ignore greater than 1000 ",()=>{
+        test("adding it should ignore 1002,1005 and return 8",()=>{
+            expect(stringSum("//;\n1002;1005,3,5")).toEqual(8)
+        })
+    })
 })
 
 describe(("input parser"),()=>{
