@@ -3,7 +3,7 @@ export function stringSum(inputStr : string ) : number{
     if(!inputStr){
         return res
     }
-    let inputArray : string[] = inputStr.split(",")
+    let inputArray : string[] = parseInput(inputStr)
     inputArray.forEach((v)=>{
         if(isNaN(parseInt(v))){
             throw Error("this is not a valid input please check")
@@ -11,4 +11,9 @@ export function stringSum(inputStr : string ) : number{
         res += parseInt(v)
     })
     return res
+}
+
+export function parseInput(inputStr : string) : string[]{
+    let regexp : RegExp = new RegExp("\n|,","g")
+    return inputStr.split(regexp)
 }
