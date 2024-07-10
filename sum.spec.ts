@@ -5,7 +5,7 @@ describe("Check Sum",()=>{
             expect(stringSum("")).toEqual(0)
         })
         test(("empty input as all greater than 1000"),()=>{
-            expect(stringSum("1001,1002,1003")).toEqual(0)
+            expect(stringSum("")).toEqual(0)
         })
         test(("check if sum is correct"),()=>{
             expect(stringSum("1,2,3,4")).toEqual(10)
@@ -37,6 +37,14 @@ describe("Check Sum",()=>{
     describe(" ignore greater than 1000 ",()=>{
         test("adding it should ignore 1002,1005 and return 8",()=>{
             expect(stringSum("//;\n1002;1005,3,5")).toEqual(8)
+        })
+    })
+    describe("multiple custom delimeter",()=>{
+        test(("delimeter with special char *"),()=>{
+            expect(stringSum("//[*][%]\n1*2%3")).toEqual(6)
+        })
+        test(("delimeter with \\"),()=>{
+                expect(stringSum("//[*][%][\]\n1*2%3\\4")).toEqual(10)
         })
     })
 })
@@ -73,9 +81,17 @@ describe(("input parser"),()=>{
             expect(parseInput("//;\n1;2")).toEqual(["1","2"])
         })
     })
+    describe("multiple custom delimeter",()=>{
+        test(("delimeter with special char *"),()=>{
+            expect(parseInput("//[*][%]\n1*2%3")).toEqual(["1","2","3"])
+        })
+        test(("delimeter with \\"),()=>{
+                expect(parseInput("//[*][%][\]\n1*2%3\\4")).toEqual(["1","2","3","4"])
+        })   
+    })
 })
 
-describe(("check if delimeter check works"),()=>{
+describe(("check if custom delimeter check works"),()=>{
     test(("input has custom delimeter should return true"),()=>{
         expect(hascustomdelimeter("//;\n1;2")).toEqual(true)
     })

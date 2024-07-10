@@ -36,17 +36,45 @@ export function checkValidity(inputArray : string[]) : number[]{
 }
 
 export function parseInput(inputStr : string) : string[]{
-    let regExpa=["\n",","]
-    let regExps : string = ""
+    let regExpa : string[]=["\n",","]
     if(hascustomdelimeter(inputStr)){
-        let inputstart : number = inputStr.indexOf("\n")
-        inputstart+=1
-        regExpa.push(inputStr[2])
-        inputStr = inputStr.slice(inputstart)
+        let splitString=inputStr.indexOf("\n")
+        regExpa.push(...getDelimeters(inputStr.slice(2,splitString)))
+        inputStr = inputStr.slice(splitString+1)
     }
+    let regExps : string = ""
     regExps=regExpa.join('|');
     let regexp : RegExp = new RegExp(regExps,"g")
     return inputStr.split(regexp)
+}
+
+export function getDelimeters(delimeters : string):string []{
+    let res : string[]=[]
+    let regCompatiblestr : string =""
+    if(delimeters.charAt(0)=='['){
+        delimeters = delimeters.substring(1,delimeters.length-1)
+        let regexp : RegExp = new RegExp("\\]\\[","g")
+        let delimetersarray : string[]  = delimeters.split(regexp)
+        delimetersarray.forEach((v:string)=>{
+            regCompatiblestr = getregchar(v)
+            res.push(regCompatiblestr)
+        })
+    }else{
+        regCompatiblestr = getregchar(delimeters)
+        res.push(regCompatiblestr)
+    }
+    return res
+}
+
+function getregchar(character:string):string{
+    let specialchars:string[] = '.,+,*,?,^,$,(,),[,],{,},|'.trim().split(',')
+    if(character==''){
+        return('\\\\'+character)
+    }else if(specialchars.includes(character)){
+            return('\\'+character)
+    }else{
+        return(character)
+    }
 }
 
 export function hascustomdelimeter(inputStr : string) : boolean {
