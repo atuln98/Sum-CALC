@@ -1,4 +1,4 @@
-import {stringSum,parseInput} from "./sum"
+import {stringSum,parseInput,hascustomdelimeter} from "./sum"
 describe("Check Sum",()=>{
     describe(("initial cases"),()=>{
         test(("empty input"),()=>{
@@ -20,7 +20,11 @@ describe("Check Sum",()=>{
         })
         
     })
-   
+    describe(" custom delimeter ",()=>{
+        test(" check ",()=>{
+            expect(stringSum("//;\n1;2")).toEqual(3)
+        })
+    })
 })
 
 describe(("input parser"),()=>{
@@ -39,5 +43,17 @@ describe(("input parser"),()=>{
         test(" new line with csv ",()=>{
             expect(parseInput("1,1\n2,4")).toEqual(["1","1","2","4"])
         })
+        test(" custom delimeter ",()=>{
+            expect(parseInput("//;\n1;2")).toEqual(["1","2"])
+        })
+    })
+})
+
+describe(("check if delimeter check works"),()=>{
+    test(("input has custom delimeter should return true"),()=>{
+        expect(hascustomdelimeter("//;\n1;2")).toEqual(true)
+    })
+    test(("input doesn't have custom delimeter should return false"),()=>{
+        expect(hascustomdelimeter("1,2,3")).toEqual(false)
     })
 })

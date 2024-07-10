@@ -14,6 +14,22 @@ export function stringSum(inputStr : string ) : number{
 }
 
 export function parseInput(inputStr : string) : string[]{
-    let regexp : RegExp = new RegExp("\n|,","g")
+    let regExpa=["\n",","]
+    let regExps : string = ""
+    if(hascustomdelimeter(inputStr)){
+        let inputstart : number = inputStr.indexOf("\n")
+        inputstart+=1
+        regExpa.push(inputStr[2])
+        inputStr = inputStr.slice(inputstart)
+    }
+    regExps=regExpa.join('|');
+    let regexp : RegExp = new RegExp(regExps,"g")
     return inputStr.split(regexp)
+}
+
+export function hascustomdelimeter(inputStr : string) : boolean {
+    if(inputStr.slice(0,2)=='//'){
+        return true;
+    }
+    return false;
 }
