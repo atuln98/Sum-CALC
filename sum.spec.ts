@@ -1,4 +1,4 @@
-import {stringSum,parseInput,hascustomdelimeter,checkValidity} from "./sum"
+import {stringSum,parseInput,hascustomdelimeter,checkValidityAndFilter,getregstring} from "./sum"
 describe("Check Sum",()=>{
     describe(("initial cases"),()=>{
         test(("empty input"),()=>{
@@ -27,6 +27,9 @@ describe("Check Sum",()=>{
         test(" check ",()=>{
             expect(stringSum("//;\n1;2")).toEqual(3)
         })
+        test(("delimeter of varied length"),()=>{
+            expect(stringSum("//***\n1***2***3")).toEqual(6)
+        })    
     })
     describe(" validate input ",()=>{
         test(" check for negative numbers",()=>{
@@ -44,20 +47,23 @@ describe("Check Sum",()=>{
             expect(stringSum("//[*][%]\n1*2%3")).toEqual(6)
         })
         test(("delimeter with \\"),()=>{
-                expect(stringSum("//[*][%][\]\n1*2%3\\4")).toEqual(10)
+                expect(stringSum("//[*][%][\\]\n1*2%3\\4")).toEqual(10)
         })
+        test(("delimeter of varied length"),()=>{
+            expect(stringSum("//[***][\\]\n1***2\\3")).toEqual(6)
+        })     
     })
 })
 
 describe(("input validator"),()=>{
     test(("should throw error"),()=>{
-        expect(()=>checkValidity(["1","2","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
+        expect(()=>checkValidityAndFilter(["1","2","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
     })
     test(("should return all numbers ignoring greater than 1000"),()=>{
-        expect(checkValidity(["1001","10002","3","5","6"])).toEqual([3,5,6])
+        expect(checkValidityAndFilter(["1001","10002","3","5","6"])).toEqual([3,5,6])
     })
     test(("should throw error"),()=>{
-        expect(()=>checkValidity(["1001","1002","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
+        expect(()=>checkValidityAndFilter(["1001","1002","-3","-5"])).toThrow(new Error('negative numbers not allowed -3,-5'))
     })
 })
 
@@ -86,8 +92,11 @@ describe(("input parser"),()=>{
             expect(parseInput("//[*][%]\n1*2%3")).toEqual(["1","2","3"])
         })
         test(("delimeter with \\"),()=>{
-                expect(parseInput("//[*][%][\]\n1*2%3\\4")).toEqual(["1","2","3","4"])
-        })   
+                expect(parseInput("//[*][%][\\]\n1*2%3\\4")).toEqual(["1","2","3","4"])
+        })
+        test(("delimeter of varied length"),()=>{
+            expect(parseInput("//[***][\\]\n1***2\\3")).toEqual(["1","2","3"])
+        })     
     })
 })
 
@@ -97,5 +106,20 @@ describe(("check if custom delimeter check works"),()=>{
     })
     test(("input doesn't have custom delimeter should return false"),()=>{
         expect(hascustomdelimeter("1,2,3")).toEqual(false)
+    })
+    test(("delimeter with \\"),()=>{
+        expect(hascustomdelimeter(String.raw`//[*][%][\]\n1*2%3\4`)).toEqual(true)
+})
+test(("delimeter of varied length"),()=>{
+    expect(hascustomdelimeter(String.raw`//[***][\\]\n1***2\\3`)).toEqual(true)
+})
+})
+
+describe(("Tests for get regstring"),()=>{
+    test(("input with backslash"),()=>{
+        expect(getregstring("\\")).toEqual("\\\\")
+    })
+    test(("input with *"),()=>{
+        expect(getregstring("***")).toEqual(String.raw`\*\*\*`)
     })
 })

@@ -4,7 +4,7 @@ export function stringSum(inputStr : string ) : number{
         return res
     }
     let inputArray : string[] = parseInput(inputStr)
-    let validatedInput : number[] = checkValidity(inputArray)
+    let validatedInput : number[] = checkValidityAndFilter(inputArray)
     validatedInput.forEach((v)=>{
         //should create an input filter function if there could be multiple filters
         //can use check validity for same
@@ -15,7 +15,7 @@ export function stringSum(inputStr : string ) : number{
     return res
 }
 
-export function checkValidity(inputArray : string[]) : number[]{
+export function checkValidityAndFilter(inputArray : string[]) : number[]{
     let positiveNumbers: number[]=[]
     let negativeNumbers: number[]=[]
     inputArray.forEach((i)=>{
@@ -38,9 +38,9 @@ export function checkValidity(inputArray : string[]) : number[]{
 export function parseInput(inputStr : string) : string[]{
     let regExpa : string[]=["\n",","]
     if(hascustomdelimeter(inputStr)){
-        let splitString=inputStr.indexOf("\n")
-        regExpa.push(...getDelimeters(inputStr.slice(2,splitString)))
-        inputStr = inputStr.slice(splitString+1)
+        let splitString=inputStr.split('\n')[0]
+        regExpa.push(...getDelimeters(splitString.slice(2,)))
+        inputStr = inputStr.slice(splitString.length+1,)
     }
     let regExps : string = ""
     regExps=regExpa.join('|');
@@ -56,22 +56,33 @@ export function getDelimeters(delimeters : string):string []{
         let regexp : RegExp = new RegExp("\\]\\[","g")
         let delimetersarray : string[]  = delimeters.split(regexp)
         delimetersarray.forEach((v:string)=>{
-            regCompatiblestr = getregchar(v)
+            regCompatiblestr = getregstring(v)
             res.push(regCompatiblestr)
         })
     }else{
-        regCompatiblestr = getregchar(delimeters)
+        regCompatiblestr = getregstring(delimeters)
         res.push(regCompatiblestr)
     }
     return res
 }
 
+export function getregstring(delimeters:string):string{
+    let regstr:string=""
+    if(delimeters.length>1){
+        for(let i=0;i<delimeters.length;i++){
+            regstr += getregchar(delimeters.charAt(i))
+        }
+    }else{
+        regstr = getregchar(delimeters)
+    }
+    return regstr
+}
 function getregchar(character:string):string{
-    let specialchars:string[] = '.,+,*,?,^,$,(,),[,],{,},|'.trim().split(',')
-    if(character==''){
-        return('\\\\'+character)
-    }else if(specialchars.includes(character)){
-            return('\\'+character)
+    let specialchars:string = String.raw`\.|\+|\*|\?|\^|\$|\(|\)|\[|\]|\{|\}|\||\\`
+    let regexp : RegExp = new RegExp(specialchars,"g")
+    if(regexp.test(character)){
+        let res: string = "\\"+character
+        return res
     }else{
         return(character)
     }
